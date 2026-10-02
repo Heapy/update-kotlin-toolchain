@@ -1,4 +1,4 @@
-# update-kotlin-toolchain
+# update-ktc
 
 Update the POSIX and Windows **JetBrains Kotlin Toolchain** wrappers together,
 verify upstream checksums, run `build` and `check`, and open a focused upgrade PR.
@@ -21,8 +21,8 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: Heapy/setup-kotlin-toolchain@v1
-      - uses: Heapy/update-kotlin-toolchain@v1
+      - uses: Heapy/setup-ktc@v1
+      - uses: Heapy/update-ktc@v1
 ```
 
 Use full release commit SHAs for immutable references. The repository must allow
@@ -65,9 +65,9 @@ upgrade and a second no-op invocation on all three operating systems.
 
 ## Related actions
 
-- [setup-kotlin-toolchain](https://github.com/Heapy/setup-kotlin-toolchain)
-- [kotlin-toolchain-check](https://github.com/Heapy/kotlin-toolchain-check)
-- [kotlin-toolchain-publish](https://github.com/Heapy/kotlin-toolchain-publish)
+- [setup-ktc](https://github.com/Heapy/setup-ktc)
+- [ktc-check](https://github.com/Heapy/ktc-check)
+- [ktc-publish](https://github.com/Heapy/ktc-publish)
 
 ## License
 

@@ -25,7 +25,7 @@ jobs:
         with:
           persist-credentials: false
       - run: npm test
-      - uses: Heapy/setup-kotlin-toolchain@e07335320a4c8639943a9396013937ba79c95a76 # v1.0.0
+      - uses: Heapy/setup-ktc@e07335320a4c8639943a9396013937ba79c95a76 # v1.0.0
         with:
           version: 0.13.0
       - uses: ./

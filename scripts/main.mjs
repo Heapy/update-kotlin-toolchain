@@ -76,7 +76,7 @@ export async function update(env = process.env) {
   if (pins.some(pin => pin.version !== pins[0].version || pin.checksum !== pins[0].checksum)) throw new Error('Project wrappers disagree');
   let target = env.INPUT_VERSION || 'latest';
   if (target === 'latest') {
-    const headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'Heapy-update-kotlin-toolchain' };
+    const headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'Heapy-update-ktc' };
     if (env.INPUT_TOKEN) headers.Authorization = `Bearer ${env.INPUT_TOKEN}`;
     const release = JSON.parse((await get('https://api.github.com/repos/JetBrains/kotlin-toolchain/releases/latest', headers)).toString('utf8'));
     target = version(String(release.tag_name).replace(/^v/, ''));
