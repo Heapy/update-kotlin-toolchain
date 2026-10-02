@@ -1,4 +1,4 @@
-name: Heapy Update Kotlin Toolchain
+name: Update Kotlin Toolchain
 description: Verify and update both Kotlin Toolchain wrappers, validate the project, and open an upgrade pull request
 branding:
   icon: git-pull-request
