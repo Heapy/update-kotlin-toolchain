@@ -25,7 +25,7 @@ jobs:
         with:
           persist-credentials: false
       - run: npm test
-      - uses: Heapy/setup-ktc@e07335320a4c8639943a9396013937ba79c95a76 # v1.0.0
+      - uses: Heapy/setup-ktc@52e4da5405a2dc056dd0c42ac86390c797d12f5d # v1.0.1
         with:
           version: 0.13.0
       - uses: ./
