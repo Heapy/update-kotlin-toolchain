@@ -1,0 +1,69 @@
+name: Heapy Update Kotlin Toolchain
+description: Verify and update both Kotlin Toolchain wrappers, validate the project, and open an upgrade pull request
+branding:
+  icon: git-pull-request
+  color: purple
+inputs:
+  version:
+    description: Exact target version or latest stable release
+    default: latest
+  working-directory:
+    description: Project directory relative to the checked-out repository
+    default: .
+  validate:
+    description: Run build and check with the updated wrappers before opening a PR
+    default: 'true'
+  create-pull-request:
+    description: Open or update an upgrade PR; false only changes local wrapper files
+    default: 'true'
+  token:
+    description: Token with contents and pull-requests write permissions when creating a PR
+    default: ${{ github.token }}
+  branch:
+    description: Dedicated automation branch for the upgrade PR
+    default: automation/kotlin-toolchain
+  base:
+    description: Base branch; empty uses the checked-out branch
+    default: ''
+outputs:
+  version:
+    description: Selected toolchain version
+    value: ${{ steps.update.outputs.version }}
+  changed:
+    description: Whether either wrapper changed
+    value: ${{ steps.update.outputs.changed }}
+  pull-request-url:
+    description: Created or updated PR URL
+    value: ${{ steps.pr.outputs.pull-request-url }}
+runs:
+  using: composite
+  steps:
+    - name: Download, verify, and validate updated wrappers
+      id: update
+      shell: bash
+      env:
+        ACTION_DIRECTORY: ${{ github.action_path }}
+        INPUT_VERSION: ${{ inputs.version }}
+        INPUT_DIRECTORY: ${{ inputs.working-directory }}
+        INPUT_VALIDATE: ${{ inputs.validate }}
+        INPUT_CREATE_PR: ${{ inputs.create-pull-request }}
+        INPUT_TOKEN: ${{ inputs.token }}
+      run: node "$ACTION_DIRECTORY/scripts/main.mjs"
+    - name: Create upgrade pull request
+      id: pr
+      if: inputs.create-pull-request == 'true'
+      uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+      with:
+        token: ${{ inputs.token }}
+        branch: ${{ inputs.branch }}
+        base: ${{ inputs.base }}
+        add-paths: ${{ steps.update.outputs.wrapper-paths }}
+        title: 'Update Kotlin Toolchain to ${{ steps.update.outputs.version }}'
+        commit-message: 'Update Kotlin Toolchain to ${{ steps.update.outputs.version }}'
+        body: |
+          Updates the POSIX and Windows wrappers from the official JetBrains distribution.
+          Both wrapper SHA-256 checksums and embedded distribution pins were verified.
+
+          Previous version: `${{ steps.update.outputs.previous-version }}`
+          Target version: `${{ steps.update.outputs.version }}`
+          Build and check validation completed: `${{ steps.update.outputs.validated }}`

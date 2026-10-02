@@ -1,0 +1,55 @@
+name: CI
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025, macos-15]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - run: npm test
+      - uses: Heapy/setup-kotlin-toolchain@f80139b381c1420d246b5ab04b5e6888eda5a0fe # v1 candidate
+        with:
+          version: 0.13.0
+      - uses: ./
+        id: upgrade
+        with:
+          working-directory: test/fixtures/jvm
+          version: 0.13.0
+          create-pull-request: 'false'
+      - name: Verify upgrade and commit fixture locally
+        env:
+          CHANGED: ${{ steps.upgrade.outputs.changed }}
+        run: |
+          test "$CHANGED" = 'true'
+          git config user.name 'CI fixture'
+          git config user.email 'ci@example.invalid'
+          git add test/fixtures/jvm/kotlin test/fixtures/jvm/kotlin.bat
+          git commit -m 'Test fixture upgrade'
+      - uses: ./
+        id: repeat
+        with:
+          working-directory: test/fixtures/jvm
+          version: 0.13.0
+          create-pull-request: 'false'
+      - name: Verify idempotency
+        env:
+          CHANGED: ${{ steps.repeat.outputs.changed }}
+        run: test "$CHANGED" = 'false'
