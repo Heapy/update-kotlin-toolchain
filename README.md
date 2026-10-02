@@ -68,3 +68,8 @@ upgrade and a second no-op invocation on all three operating systems.
 - [setup-kotlin-toolchain](https://github.com/Heapy/setup-kotlin-toolchain)
 - [kotlin-toolchain-check](https://github.com/Heapy/kotlin-toolchain-check)
 - [kotlin-toolchain-publish](https://github.com/Heapy/kotlin-toolchain-publish)
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE). Third-party
+components retain their original licenses.

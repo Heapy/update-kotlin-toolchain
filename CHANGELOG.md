@@ -2,4 +2,4 @@
 
 ## 1.0.0
 
-Initial release.
+Initial release under Apache-2.0.

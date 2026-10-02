@@ -1,3 +1,6 @@
+// Copyright 2026 Heapy
+// SPDX-License-Identifier: Apache-2.0
+
 import { appendFile, access, realpath } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import path from 'node:path';

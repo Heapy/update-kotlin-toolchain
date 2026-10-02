@@ -1,3 +1,6 @@
+// Copyright 2026 Heapy
+// SPDX-License-Identifier: Apache-2.0
+
 import { createHash } from 'node:crypto';
 import { readFile, writeFile, chmod, rename, rm } from 'node:fs/promises';
 import path from 'node:path';
